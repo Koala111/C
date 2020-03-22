@@ -1,6 +1,5 @@
 #include <stdio.h>
 #define KEY 1
-#define main main_sort
 //直接插入排序算法
 /*
 while循环排序后的顺序是：69 69 12 136 3 55 46 99 88 25
@@ -251,7 +250,47 @@ int demo_main() {
 	printf("\n");
 	return 0;
 }
+int merge(int r[],int s[],int x1,int x2,int x3)
+{
+	int i,j,k;
+	i=x1;//第一部分的开始位置 
+	j=x2+1;//第二部分的开始位置 
+	k=x1;
+	while((i<=x2)&&(j<=x3))//当i,j都在两个要合并的部分中时
+		if(r[i]<=r[j])
+		{
+			s[k] = r[i];
+			i++;
+			k++;
+		 } 
+		 else
+		 {
+		 	s[k] = r[j];
+		 	j++;
+		 	k++;
+		 }
+		 while(i<=x2)//将x1-x2范围内未比较的数顺次加到数组r中
+		 	s[k++] = r[i++];
+		 while(j<=x3)
+		 	s[k++]=r[j++];
+	return 0;
+ } 
 
+int merge_sort(int r[],int s[],int m,int n)
+{
+	int p;
+	int t[20];
+	if(m==n)
+		s[m]=r[m];
+	else
+	{
+		p=(m+n)/2;
+		merge_sort(r,t,m,p);
+		merge_sort(r,t,p+1,n);
+		merge(t,s,m,p,n);
+	}
+	return 0;
+}
 int main() {
 	int i;
 	int s[11] = {10000000,69,56,12,136,3,55,46,99,88,25};  // 3   12   25   46   55   56   69   88   99  136
@@ -259,7 +298,8 @@ int main() {
 //	insort(s,10);//插入排序算法
 //	qusort(s,1,10);//快速排序算法
 //	pol_sort(s,10);//冒泡排序算法
-	select_sort(s,10);//冒泡排序算法
+//	select_sort(s,10);//选择排序算法
+	merge_sort(s,s,1,10);//归并排序算法 
 	printf("排序后的顺序是：\n");
 
 	for(i=1; i<=10; i++)
